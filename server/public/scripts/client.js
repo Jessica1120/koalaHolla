@@ -12,11 +12,11 @@ $( document ).ready( function(){
     // NOT WORKING YET :(
     // using a test object
     var objectToSend = {
-      name: 'testName',
-      age: 'testName',
-      gender: 'testName',
-      readyForTransfer: 'testName',
-      notes: 'testName',
+      koala_name: $('#nameIn').val(),
+      age: $('#ageIn').val(),
+      gender: $('#genderIn').val(),
+      transferable: $('#readyForTransferIn').val(),
+      notes: $('#notesIn').val(),
     };
     // call saveKoala with the new obejct
     saveKoala( objectToSend );
@@ -31,10 +31,24 @@ function getKoalas(){
     type: 'GET',
     success: function( data ){
       console.log( 'got some koalas: ', data );
+      showKoalas(data);
     } // end success
   }); //end ajax
-  // display on DOM with buttons that allow edit of each
+    // display on DOM with buttons that allow edit of each
 } // end getKoalas
+
+function showKoalas(koalas){
+  $('#viewKoalas').empty();
+  for (var i = 0; i < koalas.length; i++){
+    $newRow = $('<tr>');
+    $newRow.append('<td>'+koalas[i].koala_name+'</td>');
+    $newRow.append('<td>'+koalas[i].age+'</td>');
+    $newRow.append('<td>'+koalas[i].gender+'</td>');
+    $newRow.append('<td>'+koalas[i].transferable+'</td>');
+    $newRow.append('<td>'+koalas[i].notes+'</td>');
+    $('#viewKoalas').append($newRow);
+  }
+}
 
 function saveKoala( newKoala ){
   console.log( 'in saveKoala', newKoala );
