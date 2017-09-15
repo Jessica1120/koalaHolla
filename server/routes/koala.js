@@ -47,6 +47,29 @@ router.post('/', function(req, res){
             }  
         });
     });    
-
+router.delete('/:id', function(req,res) {
+    console.log('in delete route');
+    console.log('req.params.id', req.params.id)
+    var koalaId = req.params.id
+    
+    pool.connect(function(error, client, done) {
+        
+         if(error) {
+             console.lot(error);
+             res.sendStatus(500);
+         } else {
+             var queryString = 'DELETE FROM Koala_Holla WHERE id=$1;'[koalaId];
+             client.query(queryString, values, function(queryError, resultObj) {
+                 done();
+                 if(queryError) {
+                     console.log(queryError);
+                     res.sendStatus(500);
+                     } else {
+                         res.sendStatus(200);
+                     }
+                })
+            }
+        })
+    });  
 
 module.exports = router;

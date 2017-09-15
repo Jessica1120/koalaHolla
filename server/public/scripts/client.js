@@ -9,15 +9,15 @@ $( document ).ready( function(){
   $( '#addButton' ).on( 'click', function(){
     console.log( 'in addButton on click' );
     // get user input and put in an object
-    // NOT WORKING YET :(
-    // using a test object
+  $('#viewKoalas').on('click', '.deleteMe', deleteKoala);
+   
     var objectToSend = {
       koala_name: $('#nameIn').val(),
       age: $('#ageIn').val(),
       gender: $('#genderIn').val(),
       transferable: $('#readyForTransferIn').val(),
       notes: $('#notesIn').val(),
-    };
+    }; 
     // call saveKoala with the new obejct
     saveKoala( objectToSend );
   }); //end addButton on click
@@ -37,20 +37,22 @@ function getKoalas(){
     // display on DOM with buttons that allow edit of each
 } // end getKoalas
 
-function showKoalas(koalas){
+function showKoalas(koalas){ //appends GET data onto DOM - called in GET function
   $('#viewKoalas').empty();
   for (var i = 0; i < koalas.length; i++){
-    $newRow = $('<tr>');
+    $newRow = $('<tr>').data('id', koalas[i].id);
+    $delBtn = $('<input>', {type: 'button', class: 'deleteMe', value:'Delete'});
     $newRow.append('<td>'+koalas[i].koala_name+'</td>');
     $newRow.append('<td>'+koalas[i].age+'</td>');
     $newRow.append('<td>'+koalas[i].gender+'</td>');
     $newRow.append('<td>'+koalas[i].transferable+'</td>');
     $newRow.append('<td>'+koalas[i].notes+'</td>');
+    //$newRow.append($delBtn);
     $('#viewKoalas').append($newRow);
   }
 }
 
-function saveKoala( newKoala ){
+function saveKoala( newKoala ){ //POST function - adds new Koala to DB by passing the values of Object to Send declared above.
   console.log( 'in saveKoala', newKoala );
   // ajax call to server to get koalas
   $.ajax({
@@ -62,4 +64,8 @@ function saveKoala( newKoala ){
       getKoalas();
     } // end success   
   }); //end ajax
+}
+
+function deleteKoala() {
+  console.log('delete button pushed');
 }
